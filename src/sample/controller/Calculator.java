@@ -3,22 +3,15 @@ package sample.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class created by Krish
  */
 
 public class Calculator {
-
-    @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
-    private AnchorPane screen;
 
     @FXML
     private TextField display;
@@ -146,70 +139,108 @@ public class Calculator {
     @FXML
     private Button second;
 
-    private String output = null;
     private boolean isSecond = false;
     private boolean isHyp = false;
-    private List<Button> list = Arrays.asList(on, zero, one, two, three, four, five, six, seven, eight, nine,
-            decimal, negative, plus, minus, multiply, divide, sin, cos, tan, cos, tan, log, ln, pi, exponent,
-            square, negativeOne, scientific, fraction, delete, clear, table, data, prb, leftParenthesis,
-            rightParenthesis, xyz, sto, toggle, enter, mode, second);
+
+    private Map<Button, String> numbers = new HashMap<>();
+    private Map<Button, String> operations = new HashMap<>();
+    private Map<Button, String[]> multiple = new HashMap<>();
+    private Map<Button, String[]> trigonometry = new HashMap<>();
 
     @FXML
     void initialize() {
+        numbers.put(zero, "0");
+        numbers.put(one, "1");
+        numbers.put(two, "2");
+        numbers.put(three, "3");
+        numbers.put(four, "4");
+        numbers.put(five, "5");
+        numbers.put(six, "6");
+        numbers.put(seven, "7");
+        numbers.put(eight, "8");
+        numbers.put(nine, "9");
+        numbers.put(leftParenthesis, "(");
+        numbers.put(rightParenthesis, ")");
+
+        operations.put(plus, "+");
+        operations.put(minus, "-");
+        operations.put(multiply, "*");
+        operations.put(divide, "÷");
+        operations.put(negativeOne, "⁻¹");
+        operations.put(scientific, "*10ⁿ");
+
+        multiple.put(decimal, new String[]{".", ","});
+        multiple.put(negative, new String[]{"-", "ans"});
+        multiple.put(log, new String[]{"log(", "10ˣ"});
+        multiple.put(ln, new String[]{"ln(", "eˣ"});
+        multiple.put(exponent, new String[]{"ⁿ", "ⁿ√"});
+        multiple.put(square, new String[]{"²", "√"});
+
+        trigonometry.put(sin, new String[]{"sin(", "sin⁻¹(", "sinh(", "sinh⁻¹("});
+        trigonometry.put(cos, new String[]{"cos(", "cos⁻¹(", "cosh(", "cosh⁻¹("});
+        trigonometry.put(tan, new String[]{"tan(", "tan⁻¹(", "tanh(", "tanh⁻¹("});
+
         on.setOnAction(event -> {
             if (isSecond) System.exit(0);
         });
-        zero.setOnAction(event -> output = "0");
-        one.setOnAction(event -> output = "1");
-        two.setOnAction(event -> output = "2");
-        three.setOnAction(event -> output = "3");
-        four.setOnAction(event -> output = "4");
-        five.setOnAction(event -> output = "5");
-        six.setOnAction(event -> output = "6");
-        seven.setOnAction(event -> output = "7");
-        eight.setOnAction(event -> output = "8");
-        nine.setOnAction(event -> output = "9");
-        decimal.setOnAction(event -> output = isSecond ? "," : ".");
-        negative.setOnAction(event -> output = isSecond ? "ans" : "-");
-        plus.setOnAction(event -> output = display.getText().isEmpty() ? "ans+" : "+");
-        minus.setOnAction(event -> output = display.getText().isEmpty() ? "ans-" : "-");
-        multiply.setOnAction(event -> output = display.getText().isEmpty() ? "ans*" : "*");
-        divide.setOnAction(event -> output = display.getText().isEmpty() ? "ans÷" : "÷");
-        sin.setOnAction(event -> output = isSecond ? isHyp ? display.getText() + "sinh⁻¹(" : display.getText() + "sin⁻¹(" : isHyp ? display.getText() + "sinh(" : display.getText() + "sin(");
-        cos.setOnAction(event -> output = isSecond ? isHyp ? display.getText() + "cosh⁻¹(" : display.getText() + "cos⁻¹(" : isHyp ? display.getText() + "cosh(" : display.getText() + "cos(");
-        tan.setOnAction(event -> output = isSecond ? isHyp ? display.getText() + "tanh⁻¹(" : display.getText() + "tan⁻¹(" : isHyp ? display.getText() + "tanh(" : display.getText() + "tan(");
-        log.setOnAction(event -> output = isSecond ? display.getText() + "10ˣ" : display.getText() + "log(");
-        ln.setOnAction(event -> output = isSecond ? display.getText() + "eˣ" : display.getText() + "log(");
+        second.setOnAction(event -> isSecond = true);
+        enter.setOnAction(event -> parse());
         pi.setOnAction(event -> {
             if (isSecond) isHyp = true;
             else display.setText(display.getText() + "π");
         });
-        exponent.setOnAction(event -> output = display.getText().isEmpty() ? "ansⁿ" : "ⁿ");
-        square.setOnAction(event -> output = display.getText().isEmpty() ? "ans²" : "²");
-        negativeOne.setOnAction(event -> output = display.getText().isEmpty() ? "ans⁻¹" : "⁻¹");
-        scientific.setOnAction(event -> output = display.getText().isEmpty() ? "ans*10ⁿ" : "*10ⁿ");
-        fraction.setOnAction(event -> output = "");
         delete.setOnAction(event -> {
             if (!display.getText().isEmpty()) display.setText(display.getText(0, display.getText().length() - 1));
         });
         clear.setOnAction(event -> display.setText(""));
+
+        /* todo
+        fraction.setOnAction(event -> output = "");
         table.setOnAction(event -> output = "");
         data.setOnAction(event -> output = "");
         prb.setOnAction(event -> output = "");
-        leftParenthesis.setOnAction(event -> output = display.getText() + "(");
-        rightParenthesis.setOnAction(event -> output = display.getText() + ")");
         xyz.setOnAction(event -> output = "");
         sto.setOnAction(event -> output = "");
         toggle.setOnAction(event -> output = "");
-        enter.setOnAction(event -> parse());
         mode.setOnAction(event -> output = "");
-        second.setOnAction(event -> isSecond = true);
+        */
 
-        list.forEach(button -> button.setOnAction(event -> {
-            if (output != null) {
-                display.setText(display.getText() + output);
-            }
+        numbers.forEach((k, v) -> k.setOnAction(event -> {
+            display.setText(display.getText() + v);
+            isSecond = false;
+            isHyp = false;
         }));
+        
+        for (var entry : multiple.entrySet()) {
+            entry.getKey().setOnAction(event -> {
+                if (isSecond) display.setText(display.getText() + entry.getValue()[1]);
+                else display.setText(display.getText() + entry.getValue()[0]);
+                isSecond = false;
+                isHyp = false;
+            });
+        }
+
+        for (var entry : operations.entrySet()) {
+            entry.getKey().setOnAction(event -> {
+                if (display.getText().isEmpty()) display.setText("ans" + entry.getValue());
+                else display.setText(display.getText() + entry.getValue());
+                isSecond = false;
+                isHyp = false;
+            });
+        }
+
+        trigonometry.forEach((k, v) -> k.setOnAction(event -> {
+            if (isSecond) {
+                if (isHyp) display.setText(display.getText() + v[3]);
+                else display.setText(display.getText() + v[1]);
+            } else {
+                if (isHyp) display.setText(display.getText() + v[2]);
+                else display.setText(display.getText() + v[0]);
+            }
+            isSecond = false;
+            isHyp = false;
+        }));
+
     }
 
     private void parse() {

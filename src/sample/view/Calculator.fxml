@@ -273,12 +273,7 @@
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="176.0" layoutY="482.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="\%" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="243.0" layoutY="482.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="&gt;%" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="108.0" layoutY="482.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="\%" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
