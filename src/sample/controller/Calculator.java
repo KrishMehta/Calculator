@@ -3,11 +3,10 @@ package sample.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import sample.model.ExpressionParser;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static javax.swing.UIManager.put;
 
 /**
  * Class created by Krish
@@ -144,47 +143,45 @@ public class Calculator {
     private boolean isSecond = false;
     private boolean isHyp = false;
 
-    private Map<Button, String> numbers = new HashMap<>() {{
-        put(zero, "0");
-        put(one, "1");
-        put(two, "2");
-        put(three, "3");
-        put(four, "4");
-        put(five, "5");
-        put(six, "6");
-        put(seven, "7");
-        put(eight, "8");
-        put(nine, "9");
-        put(leftParenthesis, "(");
-        put(rightParenthesis, ")");
-    }};
-
-    private Map<Button, String> operations = new HashMap<>() {{
-        put(plus, "+");
-        put(minus, "-");
-        put(multiply, "*");
-        put(divide, "÷");
-        put(negativeOne, "⁻¹");
-        put(scientific, "*10ⁿ");
-    }};
-    
-    private Map<Button, String[]> multiple = new HashMap<>() {{
-        put(decimal, new String[]{".", ","});
-        put(negative, new String[]{"-", "ans"});
-        put(log, new String[]{"log(", "10ˣ"});
-        put(ln, new String[]{"ln(", "eˣ"});
-        put(exponent, new String[]{"ⁿ", "ⁿ√"});
-        put(square, new String[]{"²", "√"});
-    }};
-    
-    private Map<Button, String[]> trigonometry = new HashMap<>() {{
-        put(sin, new String[]{"sin(", "sin⁻¹(", "sinh(", "sinh⁻¹("});
-        put(cos, new String[]{"cos(", "cos⁻¹(", "cosh(", "cosh⁻¹("});
-        put(tan, new String[]{"tan(", "tan⁻¹(", "tanh(", "tanh⁻¹("});
-    }};
+    private Map<Button, String> numbers = new HashMap<>();
+    private Map<Button, String> operations = new HashMap<>();
+    private Map<Button, String[]> multiple = new HashMap<>();
+    private Map<Button, String[]> trigonometry = new HashMap<>();
 
     @FXML
     void initialize() {
+
+        numbers.put(zero, "0");
+        numbers.put(one, "1");
+        numbers.put(two, "2");
+        numbers.put(three, "3");
+        numbers.put(four, "4");
+        numbers.put(five, "5");
+        numbers.put(six, "6");
+        numbers.put(seven, "7");
+        numbers.put(eight, "8");
+        numbers.put(nine, "9");
+        numbers.put(leftParenthesis, "(");
+        numbers.put(rightParenthesis, ")");
+
+        operations.put(plus, "+");
+        operations.put(minus, "-");
+        operations.put(multiply, "*");
+        operations.put(divide, "÷");
+        operations.put(negativeOne, "⁻¹");
+        operations.put(scientific, "*10ⁿ");
+
+        multiple.put(decimal, new String[]{".", ","});
+        multiple.put(negative, new String[]{"-", "ans"});
+        multiple.put(log, new String[]{"log(", "10ˣ"});
+        multiple.put(ln, new String[]{"ln(", "eˣ"});
+        multiple.put(exponent, new String[]{"ⁿ", "ⁿ√"});
+        multiple.put(square, new String[]{"²", "√"});
+
+        trigonometry.put(sin, new String[]{"sin(", "sin⁻¹(", "sinh(", "sinh⁻¹("});
+        trigonometry.put(cos, new String[]{"cos(", "cos⁻¹(", "cosh(", "cosh⁻¹("});
+        trigonometry.put(tan, new String[]{"tan(", "tan⁻¹(", "tanh(", "tanh⁻¹("});
+
 
         on.setOnAction(event -> {
             if (isSecond) System.exit(0);
@@ -198,7 +195,7 @@ public class Calculator {
         });
         clear.setOnAction(event -> display.setText(""));
         second.setOnAction(event -> isSecond = true);
-        enter.setOnAction(event -> parse());
+        enter.setOnAction(event -> display.setText(String.valueOf(parse())));
 
         // todo: fraction, table, data, prb, xyz, sto, toggle, mode
 
@@ -207,7 +204,7 @@ public class Calculator {
             isSecond = false;
             isHyp = false;
         }));
-        
+
         for (var entry : multiple.entrySet()) {
             entry.getKey().setOnAction(event -> {
                 if (isSecond) display.setText(display.getText() + entry.getValue()[1]);
@@ -240,8 +237,13 @@ public class Calculator {
 
     }
 
-    private void parse() {
-
+    private double parse() {
+        var text = display.getText();
+        String[] RPN = ExpressionParser.infixToRPN(text.split("\\s*"));
+        for (String s : RPN) {
+            System.out.print(s + "\t");
+        }
+        return 0;
     }
 
 }

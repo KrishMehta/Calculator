@@ -1,4 +1,4 @@
-package sample;
+package sample.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,15 +14,13 @@ public class ExpressionParser {
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
 
-    private static final Map<String, int[]> OPERATORS = new HashMap<>();
-
-    static {
-        // Map<"token", []{precendence, associativity}>
-        OPERATORS.put("+", new int[]{0, LEFT});
-        OPERATORS.put("-", new int[]{0, LEFT});
-        OPERATORS.put("*", new int[]{5, LEFT});
-        OPERATORS.put("/", new int[]{5, LEFT});
-    }
+    // Map<"token", []{precendence, associativity}>
+    private static final Map<String, int[]> OPERATORS = new HashMap<>() {{
+        put("+", new int[]{0, LEFT});
+        put("-", new int[]{0, LEFT});
+        put("*", new int[]{5, LEFT});
+        put("/", new int[]{5, LEFT});
+    }};
 
     // test if token is an operator
     private static boolean isOperator(String token) {
@@ -43,14 +41,15 @@ public class ExpressionParser {
     }
 
     // convert infix expression format into reverse Polish notation
-    private static String[] infixToRPN(String[] tokens) {
+    public static String[] infixToRPN(String[] tokens) {
         ArrayList<String> out = new ArrayList<>();
         Stack<String> stack = new Stack<>();
 
         for (String token : tokens) {
             if (isOperator(token)) {
                 while (!stack.empty() && isOperator(stack.peek())) {
-                    if ((isAssociative(token, LEFT) && comparePrecedence(token, stack.peek()) <= 0) || (isAssociative(token, RIGHT) && comparePrecedence(token, stack.peek()) < 0)) {
+                    if ((isAssociative(token, LEFT) && comparePrecedence(token, stack.peek()) <= 0)
+                            || (isAssociative(token, RIGHT) && comparePrecedence(token, stack.peek()) < 0)) {
                         out.add(stack.pop());
                         continue;
                     }
@@ -79,25 +78,29 @@ public class ExpressionParser {
         return out.toArray(output);
     }
 
-    private static double RPNtoDouble(String[] tokens) {
-        Stack<String> stack = new Stack<>();
+    public static double RPNtoDouble(String[] tokens) {
+        Stack<Double> stack = new Stack<>();
 
         for (String token : tokens) {
             // if the token is a value push it onto the stack
             if (!isOperator(token)) {
-                stack.push(token);
+                stack.push(Double.parseDouble(token));
             } else {
                 // token is an operator: pop top two entries
-                Double d2 = Double.valueOf(stack.pop());
-                Double d1 = Double.valueOf(stack.pop());
+                Double d2 = stack.pop();
+                Double d1 = stack.pop();
 
-                Double result = token.compareTo("+") == 0 ? d1 + d2 : token.compareTo("-") == 0 ? d1 - d2 : token.compareTo("*") == 0 ? d1 * d2 : d1 / d2;
+                Double result = token.matches("\\+") ? d1 + d2
+                        : token.matches("-") ? d1 - d2
+                        : token.matches("\\*") ? d1 * d2
+                        : token.matches("[/÷]") ? d1 / d2
+                        : d1;
 
                 // push result onto stack
-                stack.push(String.valueOf(result));
+                stack.push(result);
             }
         }
-        return Double.valueOf(stack.pop());
+        return stack.pop();
     }
 
 }
