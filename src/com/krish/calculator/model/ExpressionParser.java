@@ -1,4 +1,4 @@
-package sample.model;
+package com.krish.calculator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
