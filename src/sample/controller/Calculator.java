@@ -182,7 +182,6 @@ public class Calculator {
         trigonometry.put(cos, new String[]{"cos(", "cos⁻¹(", "cosh(", "cosh⁻¹("});
         trigonometry.put(tan, new String[]{"tan(", "tan⁻¹(", "tanh(", "tanh⁻¹("});
 
-
         on.setOnAction(event -> {
             if (isSecond) System.exit(0);
         });
@@ -239,11 +238,11 @@ public class Calculator {
 
     private double parse() {
         var text = display.getText();
-        String[] RPN = ExpressionParser.infixToRPN(text.split("\\s*"));
+        String[] RPN = ExpressionParser.infixToRPN(text.split(""));
         for (String s : RPN) {
             System.out.print(s + "\t");
         }
-        return 0;
+        return ExpressionParser.RPNtoDouble(RPN);
     }
 
 }
