@@ -20,6 +20,7 @@ public class ExpressionParser {
         put("-", new int[]{0, LEFT});
         put("*", new int[]{5, LEFT});
         put("/", new int[]{5, LEFT});
+        put("÷", new int[]{5, LEFT});
     }};
 
     // test if token is an operator

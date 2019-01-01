@@ -1,0 +1,11 @@
+/*
+ * Stylesheet created by Krish
+ */
+
+.button {
+    -fx-background-color: #ffffff;
+}
+
+.button:hover {
+    -fx-text-fill: whitesmoke;
+}
