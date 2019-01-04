@@ -1,5 +1,6 @@
 package com.krish.calculator.controller;
 
+import com.krish.calculator.model.ExpressionEstimator;
 import com.krish.calculator.model.ExpressionParser;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -167,7 +168,7 @@ public class Calculator {
         operations.put(plus, "+");
         operations.put(minus, "-");
         operations.put(multiply, "*");
-        operations.put(divide, "÷");
+        operations.put(divide, "/");
         operations.put(negativeOne, "⁻¹");
         operations.put(scientific, "*10ⁿ");
 
@@ -194,7 +195,13 @@ public class Calculator {
         });
         clear.setOnAction(event -> display.setText(""));
         second.setOnAction(event -> isSecond = true);
-        enter.setOnAction(event -> display.setText(String.valueOf(parse())));
+        enter.setOnAction(event -> {
+            try {
+                display.setText(String.valueOf(parse()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         // todo: fraction, table, data, prb, xyz, sto, toggle, mode
 
@@ -236,13 +243,9 @@ public class Calculator {
 
     }
 
-    private double parse() {
+    private double parse() throws Exception {
         var text = display.getText();
-        String[] RPN = ExpressionParser.infixToRPN(text.split(""));
-        for (String s : RPN) {
-            System.out.print(s + "\t");
-        }
-        return ExpressionParser.RPNtoDouble(RPN);
+        return ExpressionEstimator.calculate(text);
     }
 
 }
