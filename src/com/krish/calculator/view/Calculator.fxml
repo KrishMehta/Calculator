@@ -3,15 +3,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="800.0" prefWidth="400.0" style="-fx-background-color: #3774d6#3774d6;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.krish.calculator.controller.Calculator">
+<AnchorPane prefHeight="800.0" prefWidth="400.0" style="-fx-background-color: #3774d6#3774d6;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.krish.calculator.controller.Calculator">
    <children>
-      <AnchorPane fx:id="screen" layoutX="40.0" layoutY="79.0" prefHeight="174.0" prefWidth="321.0">
+      <AnchorPane layoutX="40.0" layoutY="79.0" prefHeight="174.0" prefWidth="321.0">
          <children>
-            <TextField fx:id="display" editable="true" alignment="TOP_LEFT" prefHeight="174.0" prefWidth="321.0" />
+            <TextField fx:id="display" alignment="TOP_LEFT" editable="true" prefHeight="174.0" prefWidth="321.0" />
          </children></AnchorPane>
       <Text layoutX="91.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scientific Calculator" textAlignment="CENTER" wrappingWidth="219.5556640625">
          <font>
@@ -23,7 +26,7 @@
             <Font name="Cambria Math" size="11.0" />
          </font>
       </Button>
-      <Button fx:id="mode" layoutX="108.0" layoutY="302.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="mode">
+      <Button fx:id="random" layoutX="108.0" layoutY="302.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="rand">
          <font>
             <Font name="Cambria Math" size="11.0" />
          </font>
@@ -73,12 +76,12 @@
             <Font name="Cambria Math" size="11.0" />
          </font>
       </Button>
-      <Button fx:id="prb" layoutX="108.0" layoutY="351.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="prb">
+      <Button fx:id="ceil" layoutX="108.0" layoutY="351.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="ceil">
          <font>
             <Font name="Cambria Math" size="11.0" />
          </font>
       </Button>
-      <Button fx:id="data" layoutX="176.0" layoutY="351.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="data">
+      <Button fx:id="round" layoutX="176.0" layoutY="351.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="round">
          <font>
             <Font name="Cambria Math" size="11.0" />
          </font>
@@ -123,7 +126,7 @@
             <Font name="Cambria Math" size="11.0" />
          </font>
       </Button>
-      <Button fx:id="table" layoutX="243.0" layoutY="400.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="table">
+      <Button fx:id="min" layoutX="243.0" layoutY="400.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="49.0" stylesheets="@Background.css" text="min">
          <font>
             <Font name="Cambria Math" size="11.0" />
          </font>
@@ -233,21 +236,6 @@
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="243.0" layoutY="676.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="ans" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="40.0" layoutY="628.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="recall" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="40.0" layoutY="579.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="clear var" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
       <Label alignment="CENTER" layoutX="243.0" layoutY="531.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
@@ -264,16 +252,6 @@
          </font>
       </Label>
       <Label alignment="CENTER" layoutX="40.0" layoutY="531.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="√" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="40.0" layoutY="482.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="x√" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="108.0" layoutY="482.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="\%" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
@@ -303,45 +281,38 @@
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="108.0" layoutY="384.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="U n/d" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="176.0" layoutY="384.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="n/d &lt;&gt; U d/n" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="243.0" layoutY="384.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="f &lt;&gt; d" textAlignment="CENTER">
-         <font>
-            <Font name="Cambria Math" size="12.0" />
-         </font>
-      </Label>
       <Label alignment="CENTER" layoutX="40.0" layoutY="335.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="10ˣ" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="108.0" layoutY="335.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="angle" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="108.0" layoutY="335.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="floor" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="176.0" layoutY="335.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="stat" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="176.0" layoutY="335.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="abs" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="176.0" layoutY="286.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="insert" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="243.0" layoutY="384.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="max" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="108.0" layoutY="286.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="quit" textAlignment="CENTER">
+      <Circle fill="DODGERBLUE" layoutX="299.0" layoutY="341.0" radius="41.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fitHeight="68.0" fitWidth="68.0" layoutX="265.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../Desktop/Arrow_arrows_expand_navigation-512.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="40.0" layoutY="579.0" prefHeight="12.0" prefWidth="49.0" stylesheets="@Background.css" text="\%" textAlignment="CENTER">
          <font>
             <Font name="Cambria Math" size="12.0" />
          </font>
       </Label>
+      <Label fx:id="hypLabel" alignment="CENTER" layoutX="1.0" layoutY="116.0" prefHeight="17.0" prefWidth="36.0" text="hyp" textFill="WHITE" visible="false" />
+      <Label fx:id="secondLabel" alignment="CENTER" layoutX="1.0" layoutY="90.0" prefHeight="17.0" prefWidth="36.0" text="2nd" textFill="WHITE" visible="false" />
    </children>
 </AnchorPane>

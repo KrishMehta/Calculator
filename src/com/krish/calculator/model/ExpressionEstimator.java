@@ -10,12 +10,10 @@ public class ExpressionEstimator {
 
     private enum OPERATOR {
         PLUS, MINUS, MULTIPLY, DIVIDE, LEFT_BRACKET, RIGHT_BRACKET, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET, COMMA,
-        SIN, COS, TAN, COT, SEC, CSC,
-        ASIN, ACOS, ATAN, ACOT, ASEC, ACSC,
-        SINH, COSH, TANH, COTH, SECH, CSCH,
-        ASINH, ACOSH, ATANH, ACOTH, ASECH, ACSCH,
-        RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, SQRT, POW, ATAN2, MIN, MAX,
-        X, NUMBER, UNARY_MINUS, END
+        SIN, COS, TAN, COT, SEC, CSC, ASIN, ACOS, ATAN, ACOT, ASEC, ACSC,
+        SINH, COSH, TANH, COTH, SECH, CSCH, ASINH, ACOSH, ATANH, ACOTH, ASECH, ACSCH,
+        RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, LOG10, SQRT, POW, ATAN2, MIN, MAX,
+        X, NUMBER, UNARY_MINUS, MOD, END
     }
 
     private enum CONSTANT_NAME {
@@ -65,6 +63,7 @@ public class ExpressionEstimator {
                 case MINUS: return left.calculate() - right.calculate();
                 case MULTIPLY: return left.calculate() * right.calculate();
                 case DIVIDE: return left.calculate() / right.calculate();
+                case MOD: return left.calculate() % right.calculate();
                 case UNARY_MINUS: return -left.calculate();
                 case SIN: return sin(left.calculate());
                 case COS: return cos(left.calculate());
@@ -128,6 +127,8 @@ public class ExpressionEstimator {
                     return exp(left.calculate());
                 case LOG:
                     return log(left.calculate());
+                case LOG10:
+                    return log10(left.calculate());
                 case SQRT:
                     return sqrt(left.calculate());
                 case POW:
