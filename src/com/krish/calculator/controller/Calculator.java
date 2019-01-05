@@ -207,8 +207,9 @@ public class Calculator {
                 hypLabel.setVisible(true);
                 isSecond = false;
                 secondLabel.setVisible(false);
+            } else {
+                display.setText(display.getText() + "pi");
             }
-            else display.setText(display.getText() + "pi");
         });
 
         delete.setOnAction(event -> {
@@ -217,9 +218,11 @@ public class Calculator {
 
         clear.setOnAction(event -> display.setText(""));
 
+        enter.setDefaultButton(true);
         enter.setOnAction(event -> {
             try {
                 display.setText(String.valueOf(parse()));
+                display.positionCaret(display.getText().length());
             } catch (Exception e) {
                 e.printStackTrace();
             }
