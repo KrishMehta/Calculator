@@ -14,6 +14,10 @@ public class ExpressionParser {
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
 
+    public ExpressionParser() {
+
+    }
+
     // Map<"token", []{precendence, associativity}>
     private static final Map<String, int[]> OPERATORS = new HashMap<>() {{
         put("+", new int[]{0, LEFT});
@@ -41,7 +45,7 @@ public class ExpressionParser {
         return OPERATORS.get(token1)[0] - OPERATORS.get(token2)[0];
     }
 
-    // convert infix expression format into reverse Polish notation
+    // convert infix expression format into reverse Polish notation (binary tree)
     public static String[] infixToRPN(String[] tokens) {
         ArrayList<String> out = new ArrayList<>();
         Stack<String> stack = new Stack<>();
@@ -79,6 +83,7 @@ public class ExpressionParser {
         return out.toArray(output);
     }
 
+    // convert reverse Polish notation into double result value (pop back on stack)
     public static double RPNtoDouble(String[] tokens) {
         Stack<Double> stack = new Stack<>();
 

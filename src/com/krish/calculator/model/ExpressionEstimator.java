@@ -6,23 +6,36 @@ import static java.lang.Math.*;
  * Class created by Krish
  */
 
-public class ExpressionEstimator {
+public class ExpressionEstimator extends ExpressionParser {
+
+    public ExpressionEstimator() {
+
+    }
+
+    public ExpressionEstimator(byte[] expression, double[] argument) {
+        this.expression = expression;
+        this.argument = argument;
+    }
+
+    public ExpressionEstimator(OPERATOR operator, Node root, int position, int arguments, double tokenValue, byte[] expression, double[] argument) {
+        this.operator = operator;
+        this.root = root;
+        this.position = position;
+        this.arguments = arguments;
+        this.tokenValue = tokenValue;
+        this.expression = expression;
+        this.argument = argument;
+    }
 
     private enum OPERATOR {
-        PLUS, MINUS, MULTIPLY, DIVIDE, LEFT_BRACKET, RIGHT_BRACKET, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET, COMMA,
-        SIN, COS, TAN, COT, SEC, CSC, ASIN, ACOS, ATAN, ACOT, ASEC, ACSC,
-        SINH, COSH, TANH, COTH, SECH, CSCH, ASINH, ACOSH, ATANH, ACOTH, ASECH, ACSCH,
-        RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, LOG10, SQRT, POW, ATAN2, MIN, MAX,
-        X, NUMBER, UNARY_MINUS, MOD, END
+        PLUS, MINUS, MULTIPLY, DIVIDE, LEFT_BRACKET, RIGHT_BRACKET, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET, RIGHT_CURLY_BRACKET, COMMA, SIN, COS, TAN, COT, SEC, CSC, ASIN, ACOS, ATAN, ACOT, ASEC, ACSC, SINH, COSH, TANH, COTH, SECH, CSCH, ASINH, ACOSH, ATANH, ACOTH, ASECH, ACSCH, RANDOM, CEIL, FLOOR, ROUND, ABS, EXP, LOG, LOG10, SQRT, POW, ATAN2, MIN, MAX, X, NUMBER, UNARY_MINUS, MOD, END
     }
 
     private enum CONSTANT_NAME {
-        PI, E, SQRT2, SQRT1_2, LN2, LOG10, LOG2E, LOG10E 
+        PI, E, SQRT2, SQRT1_2, LN2, LOG10, LOG2E, LOG10E
     }
 
-    private static final double[] CONSTANT_VALUE = {
-            PI, E, sqrt(2), sqrt(.5), log(2), log(10), 1. / log(2), 1. / log(10)
-    };
+    private static final double[] CONSTANT_VALUE = {PI, E, sqrt(2), sqrt(.5), log(2), log(10), 1. / log(2), 1. / log(10)};
 
     private OPERATOR operator;
     private Node root = null;
@@ -58,25 +71,44 @@ public class ExpressionEstimator {
         double calculate() throws Exception {
             double x;
             switch (operator) {
-                case NUMBER: return value;
-                case PLUS: return left.calculate() + right.calculate();
-                case MINUS: return left.calculate() - right.calculate();
-                case MULTIPLY: return left.calculate() * right.calculate();
-                case DIVIDE: return left.calculate() / right.calculate();
-                case MOD: return left.calculate() % right.calculate();
-                case UNARY_MINUS: return -left.calculate();
-                case SIN: return sin(left.calculate());
-                case COS: return cos(left.calculate());
-                case TAN: return tan(left.calculate());
-                case COT: return 1 / tan(left.calculate());
-                case SEC: return 1 / cos(left.calculate());
-                case CSC: return 1 / sin(left.calculate());
-                case ASIN: return asin(left.calculate());
-                case ACOS: return acos(left.calculate());
-                case ATAN: return atan(left.calculate());
-                case ACOT: return PI / 2 - atan(left.calculate());
-                case ASEC: return acos(1 / left.calculate());
-                case ACSC: return asin(1 / left.calculate());
+                case NUMBER:
+                    return value;
+                case PLUS:
+                    return left.calculate() + right.calculate();
+                case MINUS:
+                    return left.calculate() - right.calculate();
+                case MULTIPLY:
+                    return left.calculate() * right.calculate();
+                case DIVIDE:
+                    return left.calculate() / right.calculate();
+                case MOD:
+                    return left.calculate() % right.calculate();
+                case UNARY_MINUS:
+                    return -left.calculate();
+                case SIN:
+                    return sin(left.calculate());
+                case COS:
+                    return cos(left.calculate());
+                case TAN:
+                    return tan(left.calculate());
+                case COT:
+                    return 1 / tan(left.calculate());
+                case SEC:
+                    return 1 / cos(left.calculate());
+                case CSC:
+                    return 1 / sin(left.calculate());
+                case ASIN:
+                    return asin(left.calculate());
+                case ACOS:
+                    return acos(left.calculate());
+                case ATAN:
+                    return atan(left.calculate());
+                case ACOT:
+                    return PI / 2 - atan(left.calculate());
+                case ASEC:
+                    return acos(1 / left.calculate());
+                case ACSC:
+                    return asin(1 / left.calculate());
                 case SINH:
                     x = left.calculate();
                     return (exp(x) - exp(-x)) / 2;
@@ -164,6 +196,7 @@ public class ExpressionEstimator {
         return Character.isLetterOrDigit(c) || c == '_';
     }
 
+    // get token from operator enum
     private void getToken() throws Exception {
         int i;
         if (position == expression.length - 1) {
@@ -172,7 +205,7 @@ public class ExpressionEstimator {
             position++;
             operator = OPERATOR.values()[i];
         } else if (isLetter()) {
-            for (i = position++; isFunctionSymbol(); position++);
+            for (i = position++; isFunctionSymbol(); position++) ;
             String token = new String(expression, i, position - i);
             try {
                 if (token.charAt(0) == 'X' && token.length() == 1) {
@@ -203,9 +236,8 @@ public class ExpressionEstimator {
                 }
             }
         } else if (isDigit() || isPoint()) {
-            for (i = position++;
-                 isDigit() || isPoint() || expression[position] == 'E' || expression[position - 1] == 'E' && "+-".indexOf(expression[position]) != -1;
-                 position++);
+            for (i = position++; isDigit() || isPoint() || expression[position] == 'E' || expression[position - 1] == 'E' && "+-".indexOf(expression[position]) != -1; position++)
+                ;
             tokenValue = Double.parseDouble(new String(expression, i, position - i));
             operator = OPERATOR.NUMBER;
         } else {
@@ -214,7 +246,8 @@ public class ExpressionEstimator {
 
     }
 
-    public void compile(String expression) throws Exception {
+    // compile text to ensure it can be parsed
+    private void compile(String expression) throws Exception {
         position = 0;
         arguments = 0;
 
@@ -236,6 +269,7 @@ public class ExpressionEstimator {
 
     }
 
+    // parse expression with tokens as + & - (lowest precedence)
     private Node parse() throws Exception {
         Node node = parse1();
         while (operator == OPERATOR.PLUS || operator == OPERATOR.MINUS) {
@@ -246,6 +280,7 @@ public class ExpressionEstimator {
         return node;
     }
 
+    // parse expression with tokens as * & / (higher precedence)
     private Node parse1() throws Exception {
         Node node = parse2();
         while (operator == OPERATOR.MULTIPLY || operator == OPERATOR.DIVIDE) {
@@ -256,6 +291,7 @@ public class ExpressionEstimator {
         return node;
     }
 
+    // locate double operators to prevent stack underflow
     private void twoOperators() throws Exception {
         getToken();
         if (operator == OPERATOR.PLUS || operator == OPERATOR.MINUS) {
@@ -263,6 +299,7 @@ public class ExpressionEstimator {
         }
     }
 
+    // parse expression with tokens as unary minus
     private Node parse2() throws Exception {
         Node node;
         if (operator == OPERATOR.MINUS) {
@@ -277,6 +314,7 @@ public class ExpressionEstimator {
         return node;
     }
 
+    // parse expression with other operators
     private Node parse3() throws Exception {
         Node node;
         OPERATOR open;
@@ -291,6 +329,7 @@ public class ExpressionEstimator {
 
             node = new Node(operator);
 
+            // check for unbalanced open parentheses
             getToken();
             open = operator;
             if (operator != OPERATOR.LEFT_BRACKET && operator != OPERATOR.LEFT_SQUARE_BRACKET && operator != OPERATOR.LEFT_CURLY_BRACKET) {
@@ -301,6 +340,7 @@ public class ExpressionEstimator {
             if (arguments > 0) {
                 node.left = parse();
 
+                // check for expected comma
                 if (arguments == 2) {
                     if (operator != OPERATOR.COMMA) {
                         throw new Exception("Comma expected");
@@ -336,6 +376,7 @@ public class ExpressionEstimator {
         return node;
     }
 
+    // check for unbalanced brackets
     private void checkBracketBalance(OPERATOR open) throws Exception {
         if (open == OPERATOR.LEFT_BRACKET && operator != OPERATOR.RIGHT_BRACKET || open == OPERATOR.LEFT_SQUARE_BRACKET && operator != OPERATOR.RIGHT_SQUARE_BRACKET || open == OPERATOR.LEFT_CURLY_BRACKET && operator != OPERATOR.RIGHT_CURLY_BRACKET) {
             throw new Exception("Close bracket expected or another type of close bracket");
@@ -344,10 +385,15 @@ public class ExpressionEstimator {
 
     public double calculate(double[] x) throws Exception {
         this.argument = x;
+        String[] tokens = new String[x.length];
+        System.arraycopy(x, 0, tokens, 0, x.length);
+        String[] rpn = infixToRPN(tokens);
+        double result = RPNtoDouble(rpn);
         return calculate();
     }
 
-    public double calculate() throws Exception {
+    // NullPointerException check
+    private double calculate() throws Exception {
         if (root == null) {
             throw new Exception("Using of calculate() without compile()");
         }
@@ -365,6 +411,19 @@ public class ExpressionEstimator {
         return arguments;
     }
 
+    public void setArgument(double[] argument) {
+        this.argument = argument;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    // parse and return result
     public static double calculate(String s) throws Exception {
         ExpressionEstimator estimator = new ExpressionEstimator();
         estimator.compile(s);

@@ -2,18 +2,21 @@ package com.krish.calculator.controller;
 
 import com.krish.calculator.model.ExpressionEstimator;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Class created by Krish
  */
 
-public class Calculator {
+public class Calculator implements Initializable {
 
     @FXML
     private TextField display;
@@ -154,9 +157,8 @@ public class Calculator {
     private Map<Button, String[]> multiple = new HashMap<>();
     private Map<Button, String[]> trigonometry = new HashMap<>();
 
-    @FXML
-    void initialize() {
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         single.put(zero, "0");
         single.put(one, "1");
         single.put(two, "2");
@@ -260,7 +262,6 @@ public class Calculator {
             isHyp = false;
             hypLabel.setVisible(false);
         }));
-
     }
 
     private double parse() throws Exception {
